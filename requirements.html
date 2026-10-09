@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>仓库条码配置需求说明</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#24354a;font:15px/1.85 "Microsoft YaHei","PingFang SC",Arial,sans-serif}.toolbar{max-width:960px;margin:24px auto 12px;padding:0 16px;display:flex;justify-content:space-between;align-items:center;color:#748196;font-size:13px}button{font:inherit;padding:7px 16px;border:1px solid #cad7e5;border-radius:5px;background:white;color:#285d90;cursor:pointer}main{max-width:928px;margin:0 auto 40px;background:#fff;padding:40px 48px;border:1px solid #e2e8f0;border-top:4px solid #327cb8;border-radius:7px}h1{font-size:28px;line-height:1.4;margin:0 0 10px}h2{font-size:18px;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid #e4eaf2;color:#256394}p{margin:10px 0}.meta{font-size:13px;color:#8591a1;margin-bottom:24px}ul{padding-left:21px;margin:10px 0}li{padding-left:3px;margin:6px 0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{border:1px solid #dde5ef;padding:11px 14px;text-align:left;vertical-align:top}th{background:#edf4fb;color:#345f88}th:first-child,td:first-child{width:140px;white-space:nowrap}tbody tr:nth-child(even){background:#fafcfe}a{color:#226caa;text-decoration:none}.prototype{margin-top:25px;padding-top:16px;border-top:1px solid #e4eaf2}@media(max-width:650px){main{margin:0 12px 20px;padding:24px 20px}h1{font-size:23px}th,td{padding:9px 10px}}@media print{@page{size:A4;margin:16mm}body{background:#fff;font-size:11pt}.toolbar{display:none}main{max-width:none;margin:0;padding:0;border:0}h1{font-size:21pt}h2{font-size:14pt;break-after:avoid}table{font-size:10pt}tr{break-inside:avoid}thead{display:table-header-group}a{color:inherit}.table-wrap{overflow:visible}}</style></head><body><div class="toolbar"><span>需求说明 · 简版</span><button onclick="window.print()">打印 / 保存为 PDF</button></div><main><h1>仓库条码配置需求说明</h1>
+<p class="meta">版本：2026-10-09 · 简版</p>
+<h2>1. 需求目的</h2>
+<p>按仓库配置商品标签的码制、编码内容、显示文字及布局，满足不同仓库的打印要求。</p>
+<p>入口：仓库管理 → 编辑仓库。页面分为基本信息、地址与联系、商品条码、箱唛配置，底部统一保存。</p>
+<h2>2. 字段调整</h2>
+<div class="table-wrap"><table><thead><tr><th>配置项</th><th>要求</th></tr></thead><tbody>
+<tr><td>官网链接</td><td>移至基本信息，选填；填写时校验有效的 HTTP/HTTPS 地址。</td></tr>
+<tr><td>客户代码</td><td>基本信息新增，最多100字。选择组合编码或显示客户代码文字时必填。</td></tr>
+<tr><td>码制</td><td>必选：条形码、二维码；默认条形码。</td></tr>
+<tr><td>编码内容</td><td>必选：SKU、客户代码+SKU、海外仓SKU、客户代码+海外仓SKU。客户代码取仓库配置，SKU取商品资料，海外仓SKU取商品在目标海外仓的SKU映射；组合按选项顺序直接拼接。</td></tr>
+<tr><td>标签尺寸</td><td>必选，单位mm，宽×高；支持50×30、70×30、100×30、100×100、70×50。</td></tr>
+<tr><td>标签文字</td><td>多选：SKU、MADE IN CHINA、客户代码、申报品名；默认仅SKU，申报品名默认不选。文字选择不改变扫码内容；客户代码只显示实际值（如CUS0086），不显示“客户代码”文案或冒号。</td></tr>
+<tr><td>申报品名取值</td><td>取商品资料中的申报品名，不在仓库中填写固定品名。原型采用示例 Shower hose。</td></tr>
+</tbody></table></div>
+<h2>3. 模板交互</h2>
+<ul>
+<li>勾选文字后实时显示，取消勾选隐藏；码图及已选文字均可拖拽调整位置。</li>
+<li>拖拽限制在标签边界内；支持方向键微调、恢复默认布局，区域重叠时提示调整。</li>
+<li>取消勾选保留原位置，再勾选恢复；切换码制、尺寸时保留相对位置。</li>
+<li>保存时将仓库资料、标签配置及字段位置统一保存，再次编辑回填。未保存退出需确认，放弃修改恢复原配置。</li>
+<li>商品标签与箱唛设置独立，互不覆盖。</li>
+</ul>
+<h2>4. 生效与异常</h2>
+<ul>
+<li>新配置用于该仓库后续生成的标签，不修改已生成的打印文件。</li>
+<li>客户代码条件必填校验不通过时，阻断保存并定位字段；保存失败保留编辑内容。</li>
+<li>正式打印时，所选SKU、海外仓SKU或已勾选的申报品名等必需数据缺失，应阻断并提示具体商品；文字超出标签或码图不满足打印规范时提示调整。</li>
+<li>编辑沿用仓库配置权限。当前原型仅浏览器本地保存，码图为布局示意，未接入正式打印服务。</li>
+</ul>
+<h2>5. 上线初始化</h2>
+<ul>
+<li>上线前初始化仓库条码配置：自建仓默认编码内容为SKU；海外仓默认编码内容为海外仓SKU。</li>
+<li>码制统一默认条形码，后续可按仓库修改为二维码。</li>
+<li>初始化仅补齐未配置的数据，保留已有保存配置；重复执行不覆盖已配置值。</li>
+</ul>
+<p class="prototype"><a href="./?edit=1" target="_blank" rel="noopener">查看交互原型 ↗</a></p></main></body></html>
